@@ -26,8 +26,6 @@ r = redis.Redis(
         decode_responses=True
         )
 
-r = {}
-
 
 class Questions(Enum):
     SEND_QUESTION = 1
@@ -57,18 +55,14 @@ def handle_new_question_request(bot, update):
     quiz_questions = get_quiz_questions()
     current_question, answer = random.choice(list(quiz_questions.items()))
     update.message.reply_text(current_question)
-    #r.set(update.effective_user.id, current_question)
-    print(f'{current_question}\n{answer}')
-    r[update.effective_user.id] = current_question
-
+    r.set(update.effective_user.id, current_question)
+    
     return Questions.GET_ANSWER
 
 
 def handle_solution_attempt(bot, update):
     quiz_questions = get_quiz_questions()
-    #answer = quiz_questions[r.get(update.effective_user.id)].replace('Ответ:', '').lower().strip().split('.')[0]
-    answer = quiz_questions[r[update.effective_user.id]].replace('Ответ:', '').lower().strip().split('.')[0]
-    #if update.message.text in quiz_questions[r.get(update.effective_user.id)]:
+    answer = quiz_questions[r.get(update.effective_user.id)].replace('Ответ:', '').lower().strip().split('.')[0]
     if update.message.text.lower() in answer:
         update.message.reply_text('Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»')
         return Questions.SEND_QUESTION
@@ -78,8 +72,7 @@ def handle_solution_attempt(bot, update):
 
 def cancel(bot, update):
     quiz_questions = get_quiz_questions()
-    #update.message.reply_text(quiz_questions[r.get(update.effective_user.id)])
-    update.message.reply_text(quiz_questions[r[update.effective_user.id]])
+    update.message.reply_text(quiz_questions[r.get(update.effective_user.id)])
     
     return Questions.SEND_QUESTION
 
