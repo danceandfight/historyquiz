@@ -20,7 +20,6 @@ r = redis.Redis(
         decode_responses=True
         )
 
-r = {}
 
 def send_message(event, vk, msg, keyboard):
     vk.messages.send(
@@ -45,12 +44,12 @@ def handle_new_question_request(event, vk, keyboard, quiz_questions):
     current_question, answer = random.choice(list(quiz_questions.items()))
     send_message(event, vk, current_question, keyboard)
     print(f'{current_question}\n{answer}')
-    #r.set(update.effective_user.id, current_question)
-    r[event.user_id] = current_question
+    r.set(update.effective_user.id, current_question)
+    #r[event.user_id] = current_question
 
 
 def handle_solution_attempt(event, vk, keyboard, quiz_questions):
-    answer = quiz_questions[r.get(event.user_id)].lower().strip().split('.')[0]
+    answer = quiz_questions[r.get(event.user_id)].replace('Ответ:', '').lower().strip().split('.')[0]
     #if update.message.text in quiz_questions[r.get(update.effective_user.id)]:
     if event.text.lower() in answer:
         send_message(event, vk, 'Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»', keyboard)
