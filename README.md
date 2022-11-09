@@ -1,10 +1,6 @@
-# Боты для общения с пользователями Telegram и VK
+# Боты-викторины для Telegram и VK
 
-Обучаемые боты, которые умеют общаться с пользователями, используя возможности нейросети DialogFlow.
-
-![](https://raw.githubusercontent.com/danceandfight/gameofverbsbot/main/tg.gif)
-
-Поболтать с ботом можно в [чате в VK](https://vk.com/club216618579) или в [телеграме](https://t.me/dvmnxxhelpergov_bot)
+Поболтать с ботом можно в [чате в VK](https://vk.com/club216618579) или в [телеграме](https://t.me/echoquiz_bot)
 
 ## Как установить
 
@@ -12,12 +8,12 @@
 
 Скачайте код:
 ```sh
-git clone git@github.com:danceandfight/gameofverbsbot.git
+git clone git@github.com:danceandfight/historyquiz.git
 ```
 
 Перейдите в каталог проекта:
 ```sh
-cd gameofverbsbot
+cd historyquiz
 ```
 Проверьте, что `python` установлен и корректно настроен. Запустите его в командной строке:
 ```sh
@@ -44,41 +40,33 @@ pip install -r requirements.txt
 
 Создайте новую группу в [VK](vk.com) и получите токен группы в меню `Настройки/Работа с API`.
 
-Зарегистрируйтесь на [dialogflow](https://dialogflow.cloud.google.com/#/login) и создайте там проект выбрав `new project`. Вам потребуется `Project ID` из вкладки `Project Info` в `Dashboard`.
+Зарегестрируйтесь и создайте новую базу данных [Redis](https://redis.io). Вам потребуются `host`, `port` и `password`.
 
-Создайте [агента](https://cloud.google.com/dialogflow/docs/quick/build-agent) используя `Project ID` и обязательно выберите русский язык.
-
-Создайте `.json` [ключ](https://cloud.google.com/docs/authentication/getting-started) для `GOOGLE_APPLICATION_CREDENTIALS`.
-
-Создайте файл `.env` в каталоге `gameofverbsbot/` и положите туда код такого вида, заменив токены на свои:
+Создайте файл `.env` в каталоге `historyquiz/` и положите туда код такого вида, заменив токены на свои:
 ```sh
 TELEGRAM_BOT_TOKEN=1234546789:ASFGRrogjRHrtweog-bRTHrhwmniireeoWW
-GOOGLE_APPLICATION_CREDENTIALS=</Путь/до/файла/.json>
-GOOGLE_PROJECT_ID=<Project ID>
-LANGUAGE_CODE='ru'
 VK_TOKEN='vk1.a.qokPsGegrJtr...'
+REDIS_HOST='redis-18012.c293.eu-central-1-1.ec2.cloud.redislabs.com'
+REDIS_PORT=18012
+REDIS_PASSWORD='zMdDfsw243t0gkrsdmw32s0m03cmsamV'
 ```
+
+## Как пользоваться
+
+Функция `get_quiz_questions` позволяет выбирать из какого файла будут использоваться вопросы, для этого, пока что, используются индексы списка.
 
 Запустите telegram бота:
 
 ```sh
 python tg_bot.py
 ```
-Запустите vk бота:
+Начните беседу, вызвав комманду `/start`
 
+Запустите vk бота:
 ```sh
 python vk_bot.py
 ```
-
-## Как пользоваться
-
-Можно натренировать DialogFlow вручную в меню `Intents`, выбирая варианты вопросов от пользователя в `Training phrases` и ответы бота в `Text responses`.
-Можно воспользоваться готовыми тестовыми данными из файла questions использовав команду:
-```sh
-python teach_dialogflow.py
-```
-
-Начните диалоги с двумя вашими ботами.
+Поприветствуйте его командой `Привет!`
 
 ## Цели проекта
 
