@@ -49,7 +49,9 @@ VK_TOKEN='vk1.a.qokPsGegrJtr...'
 REDIS_HOST='redis-18012.c293.eu-central-1-1.ec2.cloud.redislabs.com'
 REDIS_PORT=18012
 REDIS_PASSWORD='zMdDfsw243t0gkrsdmw32s0m03cmsamV'
+QUIZ_DIRECTORY=quiz-questions
 ```
+Параметр `QUIZ_DIRECTORY` - название папки с файлами вопросов.
 
 ## Как пользоваться
 
