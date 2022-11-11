@@ -1,6 +1,7 @@
 import os
 import random
 import redis
+from contextlib import suppress
 from dotenv import load_dotenv
 
 import vk_api
@@ -66,15 +67,14 @@ def main():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             if event.text in ['Привет!', 'Добрый день!']:
                 send_message(event, vk, 'Привет! Я бот для викторин!', keyboard)
-            try:
+            with suppress(Exception):
                 if event.text == 'Сдаться':
                     cancel(event, vk, keyboard, quiz_questions, r)
                 elif event.text == 'Новый вопрос':
                     handle_new_question_request(event, vk, keyboard, quiz_questions, r)
                 else:
                     handle_solution_attempt(event, vk, keyboard, quiz_questions, r)
-            except Exception:
-                pass
+
 
 if __name__ == '__main__':
     main()
