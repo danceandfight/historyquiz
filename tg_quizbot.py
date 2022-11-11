@@ -11,9 +11,6 @@ from functools import partial
 from quiz_questions_loader import get_quiz_questions
 
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-
 logger = logging.getLogger(__name__)
 
 
@@ -65,6 +62,10 @@ def cancel(redis_db, quiz_questions, bot, update):
 
 
 def main():
+
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
     load_dotenv()
     r = redis.Redis(
         host=os.getenv('REDIS_HOST'),
