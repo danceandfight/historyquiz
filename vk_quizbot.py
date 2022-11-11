@@ -62,7 +62,7 @@ def main():
     vk = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
     keyboard = create_keyboard()
-    quiz_questions = get_quiz_questions()
+    quiz_questions = get_quiz_questions(os.getenv('QUIZ_DIRECTORY'))
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             if event.text in ['Привет!', 'Добрый день!']:

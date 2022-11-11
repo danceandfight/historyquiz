@@ -74,7 +74,7 @@ def main():
         password=os.getenv('REDIS_PASSWORD'),
         decode_responses=True
         )
-    quiz_questions = get_quiz_questions()
+    quiz_questions = get_quiz_questions(os.getenv('QUIZ_DIRECTORY'))
     telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
     updater = Updater(telegram_bot_token)
 

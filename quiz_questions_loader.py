@@ -1,8 +1,7 @@
 import os
 
 
-def get_quiz_questions():
-    quiz_directory = os.getenv('QUIZ_DIRECTORY')
+def get_quiz_questions(quiz_directory):
     filenames = os.listdir(quiz_directory)
     question_answer_pairs = {}
     for filename in filenames:
