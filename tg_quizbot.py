@@ -10,8 +10,6 @@ from enum import Enum
 from functools import partial
 from quiz_questions_loader import get_quiz_questions
 
-load_dotenv()
-
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -67,6 +65,7 @@ def cancel(redis_db, quiz_questions, bot, update):
 
 
 def main():
+    load_dotenv()
     r = redis.Redis(
         host=os.getenv('REDIS_HOST'),
         port=os.getenv('REDIS_PORT'), 

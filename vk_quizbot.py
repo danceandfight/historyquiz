@@ -10,8 +10,6 @@ from vk_api.utils import get_random_id
 
 from quiz_questions_loader import get_quiz_questions
 
-load_dotenv()
-
 
 def send_message(event, vk, msg, keyboard):
     vk.messages.send(
@@ -51,7 +49,7 @@ def cancel(event, vk, keyboard, quiz_questions, redis_db):
 
 
 def main():
-
+    load_dotenv()
     r = redis.Redis(
         host=os.getenv('REDIS_HOST'),
         port=os.getenv('REDIS_PORT'), 
