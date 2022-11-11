@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 
 
 def get_quiz_questions():
@@ -17,7 +16,3 @@ def get_quiz_questions():
                 value = chunk
                 question_answer_pairs[key] = value
     return question_answer_pairs
-
-if __name__ == '__main__':
-    load_dotenv()
-    get_quiz_questions()
