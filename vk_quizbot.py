@@ -12,14 +12,6 @@ from quiz_questions_loader import get_quiz_questions
 
 load_dotenv()
 
-r = redis.Redis(
-        host=os.getenv('REDIS_HOST'),
-        port=os.getenv('REDIS_PORT'), 
-        db=0,
-        password=os.getenv('REDIS_PASSWORD'),
-        decode_responses=True
-        )
-
 
 def send_message(event, vk, msg, keyboard):
     vk.messages.send(
@@ -40,25 +32,33 @@ def create_keyboard():
     
     return keyboard
 
-def handle_new_question_request(event, vk, keyboard, quiz_questions):
+def handle_new_question_request(event, vk, keyboard, quiz_questions, redis_db):
     current_question, answer = random.choice(list(quiz_questions.items()))
     send_message(event, vk, current_question, keyboard)
     print(f'{current_question}\n{answer}')
-    r.set(event.user_id, current_question)
+    redis_db.set(event.user_id, current_question)
 
 
-def handle_solution_attempt(event, vk, keyboard, quiz_questions):
-    answer = quiz_questions[r.get(event.user_id)].replace('Ответ:', '').lower().strip().split('.')[0]
+def handle_solution_attempt(event, vk, keyboard, quiz_questions, redis_db):
+    answer = quiz_questions[redis_db.get(event.user_id)].replace('Ответ:', '').lower().strip().split('.')[0]
     if event.text.lower() in answer:
         send_message(event, vk, 'Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»', keyboard)
     else:
         send_message(event, vk, 'Неправильно… Попробуешь ещё раз?', keyboard)
 
-def cancel(event, vk, keyboard, quiz_questions):
-    send_message(event, vk, quiz_questions[r.get(event.user_id)], keyboard)
+def cancel(event, vk, keyboard, quiz_questions, redis_db):
+    send_message(event, vk, quiz_questions[redis_db.get(event.user_id)], keyboard)
 
 
 def main():
+
+    r = redis.Redis(
+        host=os.getenv('REDIS_HOST'),
+        port=os.getenv('REDIS_PORT'), 
+        db=0,
+        password=os.getenv('REDIS_PASSWORD'),
+        decode_responses=True
+        )
 
     vk_session = vk_api.VkApi(token=os.getenv('VK_GROUP_TOKEN'))
     vk = vk_session.get_api()
@@ -71,11 +71,11 @@ def main():
                 send_message(event, vk, 'Привет! Я бот для викторин!', keyboard)
             try:
                 if event.text == 'Сдаться':
-                    cancel(event, vk, keyboard, quiz_questions)
+                    cancel(event, vk, keyboard, quiz_questions, r)
                 elif event.text == 'Новый вопрос':
-                    handle_new_question_request(event, vk, keyboard, quiz_questions)
+                    handle_new_question_request(event, vk, keyboard, quiz_questions, r)
                 else:
-                    handle_solution_attempt(event, vk, keyboard, quiz_questions)
+                    handle_solution_attempt(event, vk, keyboard, quiz_questions, r)
             except Exception:
                 pass
 
