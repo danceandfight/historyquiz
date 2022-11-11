@@ -33,7 +33,6 @@ def create_keyboard():
 def handle_new_question_request(event, vk, keyboard, quiz_questions, redis_db):
     current_question, answer = random.choice(list(quiz_questions.items()))
     send_message(event, vk, current_question, keyboard)
-    print(f'{current_question}\n{answer}')
     redis_db.set(event.user_id, current_question)
 
 
