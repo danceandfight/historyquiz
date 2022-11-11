@@ -10,7 +10,7 @@ from enum import Enum
 from functools import partial
 from quiz_questions_loader import get_quiz_questions
 
-# Enable logging
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
